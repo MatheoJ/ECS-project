@@ -20,12 +20,13 @@ MonoBehaviour:
   circleInstancesToSpawn:
   - initialSize: 3
     initialPosition: {x: 5, y: 5}
-    initialVelocity: {x: 0, y: 0}
+    initialVelocity: {x: 3, y: 0}
   - initialSize: 5
     initialPosition: {x: 0, y: 0}
-    initialVelocity: {x: 0, y: 0}
+    initialVelocity: {x: 3, y: 5}
   systemsEnabled:
     keys:
     - Initialize
     - Draw
-    values: 0101
+    - Mouvement
+    values: 010101

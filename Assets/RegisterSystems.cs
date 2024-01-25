@@ -10,6 +10,8 @@ public class RegisterSystems
         // Add your systems here
         toRegister.Add(new Initialize());
         toRegister.Add(new Draw());
+        toRegister.Add(new Movement());
+        toRegister.Add(new Collision());
 
         return toRegister;
     }

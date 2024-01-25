@@ -6,6 +6,7 @@ public class World
 {
     public Taille[] tailleTab;
     public Position[] positionTab;
+    public Speed[] speedTab;
     public List<uint> entities = new List<uint>();
     public uint nbEntities = 0;
 
@@ -25,5 +26,6 @@ public class World
     private World() {
         tailleTab = new Taille[1000];
         positionTab = new Position[1000];
+        speedTab = new Speed[1000];
     }
 }

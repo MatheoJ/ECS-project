@@ -21,6 +21,7 @@ public class Initialize : ISystem
             world.entities.Add(world.nbEntities);
             world.positionTab[world.nbEntities] = new Position ( shapeConf.initialPosition );
             world.tailleTab[world.nbEntities] = new Taille ( shapeConf.initialSize );
+            world.speedTab[world.nbEntities] = new Speed ( shapeConf.initialVelocity);
 
             Color color = Color.white;
 

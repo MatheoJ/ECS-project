@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Taille : IComponent
 {
-   public int taille;
+   public float taille;
 
-    public Taille(int taille)
+    public Taille(float taille)
     {
         this.taille = taille;
     }

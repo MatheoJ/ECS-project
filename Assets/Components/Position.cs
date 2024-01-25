@@ -10,4 +10,4 @@ public class Position : IComponent
     {
         this.position = position;
     }
-}
+}   
