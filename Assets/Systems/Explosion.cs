@@ -7,6 +7,10 @@ public class Explosion : ISystem
     public void UpdateSystem()
     {
         int tailleMax = ECSController.Instance.Config.explosionSize;
+        bool mouseDown = Input.GetMouseButtonDown(0);
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPosition.z = 0; // Assurez-vous que la position Z est à 0 pour une correspondance 2D
+
 
         foreach (var entityID in World.Instance.entities)
         {
@@ -14,13 +18,14 @@ public class Explosion : ISystem
             var taille = World.Instance.tailleTab[entityID];
             var speed = World.Instance.speedTab[entityID];
 
-            if (taille.taille <= 0f)
+            bool isMouseOver = mouseDown && IsMouseOverEntity(mouseWorldPosition, position, taille);
+
+            if (taille.taille <= 0f || (isMouseOver && taille.taille <= 4 ))
             {
                 World.Instance.entities.Remove(entityID);
                 ECSController.Instance.DestroyShape(entityID);
             }
-
-            if (taille.taille >= tailleMax)
+            else if (taille.taille >= tailleMax || isMouseOver)
             {
                 int newTaille = ((int)(taille.taille / 4.0));
                 if (newTaille < 1)
@@ -56,5 +61,15 @@ public class Explosion : ISystem
         }
     }
     public string Name { get; } = "Explosion";
+
+    private bool IsMouseOverEntity(Vector3 mousePosition, Position entityPosition, Taille entityTaille)
+    {
+        // Logique pour déterminer si la souris est sur l'entité
+        // Cela dépend de la forme de votre entité (cercle, carré, etc.)
+        // Par exemple, pour un cercle :
+        return (mousePosition - new Vector3(entityPosition.position.x, entityPosition.position.y, 0)).magnitude < entityTaille.taille;
+    }
+
+
 }
 
