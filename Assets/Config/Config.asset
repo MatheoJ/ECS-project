@@ -20,7 +20,7 @@ MonoBehaviour:
   circleInstancesToSpawn:
   - initialSize: 3
     initialPosition: {x: 5, y: 5}
-    initialVelocity: {x: 7, y: 2}
+    initialVelocity: {x: 0, y: 0}
   - initialSize: 6
     initialPosition: {x: 2, y: 2}
     initialVelocity: {x: 6, y: 8}

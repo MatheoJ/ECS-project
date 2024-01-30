@@ -70,15 +70,18 @@ public class Collision : ISystem
                     speed.speed = collisionResult.velocity1;
                     speed2.speed = collisionResult.velocity2;
 
-                    if (taille2.taille > taille.taille)
+                    if (speed2.speed.magnitude != 0 && speed.speed.magnitude != 0)
                     {
-                        taille2.taille++;
-                        taille.taille--;
-                    }
-                    else if (taille2.taille < taille.taille)
-                    {
-                        taille2.taille--;
-                        taille.taille++;
+                        if (taille2.taille > taille.taille)
+                        {
+                            taille2.taille++;
+                            taille.taille--;
+                        }
+                        else if (taille2.taille < taille.taille)
+                        {
+                            taille2.taille--;
+                            taille.taille++;
+                        }
                     }
                 } 
             }
