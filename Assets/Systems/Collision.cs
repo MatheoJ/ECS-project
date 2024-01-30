@@ -69,7 +69,18 @@ public class Collision : ISystem
                     position2.position = collisionResult.position2;
                     speed.speed = collisionResult.velocity1;
                     speed2.speed = collisionResult.velocity2;
-                }
+
+                    if (taille2.taille > taille.taille)
+                    {
+                        taille2.taille++;
+                        taille.taille--;
+                    }
+                    else if (taille2.taille < taille.taille)
+                    {
+                        taille2.taille--;
+                        taille.taille++;
+                    }
+                } 
             }
         }
     }

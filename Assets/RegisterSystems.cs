@@ -12,6 +12,7 @@ public class RegisterSystems
         toRegister.Add(new Draw());
         toRegister.Add(new Movement());
         toRegister.Add(new Collision());
+        toRegister.Add(new Explosion());
 
         return toRegister;
     }
