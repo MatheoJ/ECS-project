@@ -52,6 +52,7 @@ public class Collision : ISystem
             var position = World.Instance.positionTab[entityID];
             var taille = World.Instance.tailleTab[entityID];
             var speed = World.Instance.speedTab[entityID];
+            var state = World.Instance.stateTab[entityID];
 
             int indexOfentity = World.Instance.entities.IndexOf(entityID);
 
@@ -69,20 +70,65 @@ public class Collision : ISystem
                     position2.position = collisionResult.position2;
                     speed.speed = collisionResult.velocity1;
                     speed2.speed = collisionResult.velocity2;
+                    int tailleProtection = ECSController.Instance.Config.protectionSize;
+                    var collisionCount = World.Instance.collisionCountTab[entityID].collisionCount;
+                    var collisionCount2 = World.Instance.collisionCountTab[World.Instance.entities[i]].collisionCount;
+                    var state2 = World.Instance.stateTab[World.Instance.entities[i]];
 
-                    if (taille2.taille > taille.taille)
-                    {
-                        taille2.taille++;
-                        taille.taille--;
+                    if (state.state != State.CircleState.Static && state2.state != State.CircleState.Static) {
+                        HandleDynamicCollision(entityID, World.Instance.entities[i], taille, taille2, state, state2, tailleProtection);
                     }
-                    else if (taille2.taille < taille.taille)
-                    {
-                        taille2.taille--;
-                        taille.taille++;
-                    }
-                } 
+
+
+                }
+
             }
         }
     }
-    public string Name { get; } = "Draw";
+
+    private static void HandleDynamicCollision(uint entity1, uint entity2, Taille taille1, Taille taille2, State state1, State state2, float protectionSize)
+    {
+        // Increment the collision counter for dynamic circles of the same size
+        if (taille1.taille == taille2.taille && taille1.taille == protectionSize)
+        {
+            World.Instance.collisionCountTab[entity1].collisionCount++;
+            World.Instance.collisionCountTab[entity2].collisionCount++;
+            //debug collision count
+            Debug.Log("Collision count : " + World.Instance.collisionCountTab[entity1].collisionCount);
+            Debug.Log("Collision count : " + World.Instance.collisionCountTab[entity2].collisionCount);
+        }
+
+        //  Change the size for the bigger circle in collision with a smaller circle
+        if (state1.state != State.CircleState.Protected && state2.state != State.CircleState.Protected)
+        {
+            if (taille1.taille > taille2.taille)
+            {
+                taille1.taille++;
+                taille2.taille--;
+            }
+            else if (taille1.taille < taille2.taille)
+            {
+                taille1.taille--;
+                taille2.taille++;
+            }
+        }
+        else if (state1.state == State.CircleState.Protected || state2.state == State.CircleState.Protected)
+        {
+            HandleProtectedCollision(entity1, entity2, taille1, taille2, state1, state2);
+        }
+    }
+
+    private static void HandleProtectedCollision(uint entity1, uint entity2, Taille taille1, Taille taille2, State state1, State state2)
+    {
+        // Decrease the size for the bigger circle in collision with a protected circle
+        if (state1.state == State.CircleState.Protected && taille1.taille < taille2.taille)
+        {
+            taille2.taille--;
+        }
+        else if (state2.state == State.CircleState.Protected && taille2.taille < taille1.taille)
+        {
+            taille1.taille--;
+        }
+    }
+    public string Name { get; } = "Collision";
 }

@@ -22,6 +22,10 @@ public class Initialize : ISystem
             world.positionTab[world.nbEntities] = new Position ( shapeConf.initialPosition );
             world.tailleTab[world.nbEntities] = new Taille ( shapeConf.initialSize );
             world.speedTab[world.nbEntities] = new Speed ( shapeConf.initialVelocity);
+            world.stateTab[world.nbEntities] = new State ( State.CircleState.Dynamic );
+            world.collisionCountTab[world.nbEntities] = new CollisionCount ();
+            world.protectionTimeTab[world.nbEntities] = new ProtectionTime ();
+            world.cooldownTimeTab[world.nbEntities] = new CooldownTime ();
 
             Color color = Color.white;
 
