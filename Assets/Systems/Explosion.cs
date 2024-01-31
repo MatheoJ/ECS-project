@@ -11,6 +11,9 @@ public class Explosion : ISystem
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPosition.z = 0; // Assurez-vous que la position Z est à 0 pour une correspondance 2D
 
+        List<uint> entitiesToRemove = new List<uint>();
+        List<uint> entitiesToAdd = new List<uint>();
+
 
         foreach (var entityID in World.Instance.entities)
         {
@@ -18,15 +21,16 @@ public class Explosion : ISystem
             var taille = World.Instance.tailleTab[entityID];
             var speed = World.Instance.speedTab[entityID];
 
+            
             bool isMouseOver = mouseDown && IsMouseOverEntity(mouseWorldPosition, position, taille);
 
             if (taille.taille <= 0f || (isMouseOver && taille.taille <= 4 ))
             {
-                World.Instance.entities.Remove(entityID);
-                ECSController.Instance.DestroyShape(entityID);
+                entitiesToRemove.Add(entityID);
             }
             else if (taille.taille >= tailleMax || isMouseOver)
             {
+
                 int newTaille = ((int)(taille.taille / 4.0));
                 if (newTaille < 1)
                 {
@@ -45,7 +49,8 @@ public class Explosion : ISystem
                 // Create 4 new entities
                 for (int i = 0; i < 4; i++)
                 {
-                    World.Instance.entities.Add(World.Instance.nbEntities);
+                    entitiesToAdd.Add(World.Instance.nbEntities);
+
                     World.Instance.positionTab[World.Instance.nbEntities] = new Position(position.position + diagonals[i] * thirdOfTaille);
                     World.Instance.tailleTab[World.Instance.nbEntities] = new Taille(newTaille);
                     World.Instance.speedTab[World.Instance.nbEntities] = new Speed(diagonals[i] * speedValue);
@@ -59,10 +64,21 @@ public class Explosion : ISystem
                     World.Instance.nbEntities++;
                 }
 
-                World.Instance.entities.Remove(entityID);
-                ECSController.Instance.DestroyShape(entityID);
+                entitiesToRemove.Add(entityID);                
             }
         }
+
+        foreach (var entityID in entitiesToRemove)
+        {
+            World.Instance.entities.Remove(entityID);
+            ECSController.Instance.DestroyShape(entityID);
+        }
+
+        foreach (var entityID in entitiesToAdd)
+        {
+            World.Instance.entities.Add(entityID);
+        }
+
     }
     public string Name { get; } = "Explosion";
 
