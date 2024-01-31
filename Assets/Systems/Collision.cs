@@ -70,6 +70,7 @@ public class Collision : ISystem
                     position2.position = collisionResult.position2;
                     speed.speed = collisionResult.velocity1;
                     speed2.speed = collisionResult.velocity2;
+
                     int tailleProtection = ECSController.Instance.Config.protectionSize;
                     var collisionCount = World.Instance.collisionCountTab[entityID].collisionCount;
                     var collisionCount2 = World.Instance.collisionCountTab[World.Instance.entities[i]].collisionCount;
