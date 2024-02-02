@@ -8,12 +8,18 @@ public class Protection : ISystem
 
     public void UpdateSystem()
     {
-        foreach (var entityID in World.Instance.entities)
+        var world = World.Instance;
+        foreach (var entityID in world.entities)
         {
-            var collisionCount = World.Instance.collisionCountTab[entityID];
-            var state = World.Instance.stateTab[entityID];
-            var protectionTime = World.Instance.protectionTimeTab[entityID];
-            var cooldownTime = World.Instance.cooldownTimeTab[entityID];
+            if (!world.ShouldEntityBeUpdated(entityID))
+            {
+                continue;
+            }
+
+            var collisionCount = world.collisionCountTab[entityID];
+            var state = world.stateTab[entityID];
+            var protectionTime = world.protectionTimeTab[entityID];
+            var cooldownTime = world.cooldownTimeTab[entityID];
             float protectionCollisionCount = ECSController.Instance.Config.protectionCollisionCount;
             float protectionDuration = ECSController.Instance.Config.protectionDuration;
             float protectionCooldown = ECSController.Instance.Config.protectionCooldown;

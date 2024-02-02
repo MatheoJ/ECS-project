@@ -13,6 +13,7 @@ public class World
     public CooldownTime[] cooldownTimeTab;
     public List<uint> entities = new List<uint>();
     public uint nbEntities = 0;
+    public uint frameCountForLeftPartofScreen = 0;
 
     private static World _instance;
 
@@ -25,6 +26,31 @@ public class World
             _instance = new World();
             return _instance;
         }
+    }
+
+    public void IncreaseFrameCountForLeftPartOfScreen()
+    {
+        frameCountForLeftPartofScreen++;
+        frameCountForLeftPartofScreen = frameCountForLeftPartofScreen % 4;
+    }
+
+    public bool ShouldEntityBeUpdated(uint entityID)
+    {
+        if (frameCountForLeftPartofScreen==0)
+        {
+            return true;
+        }
+        else
+        {
+            return IsEntityOnTheLeftOnTheScreen(entityID);
+        }
+    }
+
+    private bool IsEntityOnTheLeftOnTheScreen(uint entityID)
+    {
+        float xPosition = positionTab[entityID].position.x;
+                
+        return xPosition < 0;
     }
 
     private World() {

@@ -8,12 +8,12 @@ public class RegisterSystems
         var toRegister = new List<ISystem>();
         
         // Add your systems here
-        toRegister.Add(new Initialize());
-        toRegister.Add(new Draw());
+        toRegister.Add(new Initialize());        
         toRegister.Add(new Movement());
         toRegister.Add(new Collision());
         toRegister.Add(new Explosion());
         toRegister.Add(new Protection());
+        toRegister.Add(new Draw());
 
 
         return toRegister;

@@ -10,14 +10,15 @@ public class Initialize : ISystem
     static bool hasBeenInitialized = false;
     public void UpdateSystem()
     {
+        var world = World.Instance;
+        world.IncreaseFrameCountForLeftPartOfScreen();
 
         if (hasBeenInitialized)
             return;
         hasBeenInitialized = true;
-
-        var world = World.Instance;
+        
         foreach (ShapeConfig shapeConf in ECSController.Instance.Config.circleInstancesToSpawn)
-       {
+        {
             world.entities.Add(world.nbEntities);
             world.positionTab[world.nbEntities] = new Position ( shapeConf.initialPosition );
             world.tailleTab[world.nbEntities] = new Taille ( shapeConf.initialSize );
@@ -38,11 +39,7 @@ public class Initialize : ISystem
 
             //Log the entity creation
             Debug.Log("Entity " + world.nbEntities + " "+ world.tailleTab[world.nbEntities].taille);
-
-
             world.nbEntities++;
-
-
         }
 
 

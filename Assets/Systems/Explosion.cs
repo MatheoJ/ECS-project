@@ -14,12 +14,20 @@ public class Explosion : ISystem
         List<uint> entitiesToRemove = new List<uint>();
         List<uint> entitiesToAdd = new List<uint>();
 
+        var world = World.Instance;
 
-        foreach (var entityID in World.Instance.entities)
+
+        foreach (var entityID in world.entities)
         {
-            var position = World.Instance.positionTab[entityID];
-            var taille = World.Instance.tailleTab[entityID];
-            var speed = World.Instance.speedTab[entityID];
+
+            if (!world.ShouldEntityBeUpdated(entityID))
+            {
+                continue;
+            }
+
+            var position = world.positionTab[entityID];
+            var taille = world.tailleTab[entityID];
+            var speed = world.speedTab[entityID];
 
             
             bool isMouseOver = mouseDown && IsMouseOverEntity(mouseWorldPosition, position, taille);
@@ -49,19 +57,19 @@ public class Explosion : ISystem
                 // Create 4 new entities
                 for (int i = 0; i < 4; i++)
                 {
-                    entitiesToAdd.Add(World.Instance.nbEntities);
+                    entitiesToAdd.Add(world.nbEntities);
 
-                    World.Instance.positionTab[World.Instance.nbEntities] = new Position(position.position + diagonals[i] * thirdOfTaille);
-                    World.Instance.tailleTab[World.Instance.nbEntities] = new Taille(newTaille);
-                    World.Instance.speedTab[World.Instance.nbEntities] = new Speed(diagonals[i] * speedValue);
-                    World.Instance.stateTab[World.Instance.nbEntities] = new State(State.CircleState.Dynamic);
-                    World.Instance.collisionCountTab[World.Instance.nbEntities] = new CollisionCount();
-                    World.Instance.protectionTimeTab[World.Instance.nbEntities] = new ProtectionTime();
-                    World.Instance.cooldownTimeTab[World.Instance.nbEntities] = new CooldownTime();
+                    world.positionTab[world.nbEntities] = new Position(position.position + diagonals[i] * thirdOfTaille);
+                    world.tailleTab[world.nbEntities] = new Taille(newTaille);
+                    world.speedTab[world.nbEntities] = new Speed(diagonals[i] * speedValue);
+                    world.stateTab[world.nbEntities] = new State(State.CircleState.Dynamic);
+                    world.collisionCountTab[world.nbEntities] = new CollisionCount();
+                    world.protectionTimeTab[world.nbEntities] = new ProtectionTime();
+                    world.cooldownTimeTab[world.nbEntities] = new CooldownTime();
 
-                    ECSController.Instance.CreateShape(World.Instance.nbEntities, newTaille);
+                    ECSController.Instance.CreateShape(world.nbEntities, newTaille);
 
-                    World.Instance.nbEntities++;
+                    world.nbEntities++;
                 }
 
                 entitiesToRemove.Add(entityID);                
@@ -70,13 +78,13 @@ public class Explosion : ISystem
 
         foreach (var entityID in entitiesToRemove)
         {
-            World.Instance.entities.Remove(entityID);
+            world.entities.Remove(entityID);
             ECSController.Instance.DestroyShape(entityID);
         }
 
         foreach (var entityID in entitiesToAdd)
         {
-            World.Instance.entities.Add(entityID);
+            world.entities.Add(entityID);
         }
 
     }
@@ -84,9 +92,6 @@ public class Explosion : ISystem
 
     private bool IsMouseOverEntity(Vector3 mousePosition, Position entityPosition, Taille entityTaille)
     {
-        // Logique pour déterminer si la souris est sur l'entité
-        // Cela dépend de la forme de votre entité (cercle, carré, etc.)
-        // Par exemple, pour un cercle :
         return (mousePosition - new Vector3(entityPosition.position.x, entityPosition.position.y, 0)).magnitude < entityTaille.taille;
     }
 

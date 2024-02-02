@@ -18,8 +18,15 @@ public class Movement : ISystem
         previousTime = currentTime;
 
         var world = World.Instance;
+        
+
         foreach (var entityID in world.entities)
         {
+            if (!world.ShouldEntityBeUpdated(entityID))
+            {
+                continue;
+            }
+
             var position = world.positionTab[entityID];
             var speed = world.speedTab[entityID];
             position.position += speed.speed * (float)deltaTime;

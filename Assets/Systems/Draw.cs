@@ -6,23 +6,34 @@ public class Draw : ISystem
 {
     public void UpdateSystem() { 
 
-        foreach (var entityID in World.Instance.entities)
+        var world = World.Instance;
+        foreach (var entityID in world.entities)
         {
-            var position = World.Instance.positionTab[entityID];
+            if (!world.ShouldEntityBeUpdated(entityID))
+            {
+                continue;
+            }
+            var position = world.positionTab[entityID];
             ECSController.Instance.UpdateShapePosition(entityID, position.position);
-            //Debug.Log("Position " + position.position);
         }
 
-        foreach (var entityID in World.Instance.entities)
+        foreach (var entityID in world.entities)
         {
-            var taille = World.Instance.tailleTab[entityID];
+            if (!world.ShouldEntityBeUpdated(entityID))
+            {
+                continue;
+            }
+            var taille = world.tailleTab[entityID];
             ECSController.Instance.UpdateShapeSize(entityID, taille.taille);
-            //Debug.Log("Taille " + taille.taille);
         }
 
-        foreach (var entityID in World.Instance.entities)
+        foreach (var entityID in world.entities)
         {
-            var state = World.Instance.stateTab[entityID];
+            if (!world.ShouldEntityBeUpdated(entityID))
+            {
+                continue;
+            }
+            var state = world.stateTab[entityID];
             Color color = new Color();
             if (state.state == State.CircleState.Dynamic)
             {
@@ -40,6 +51,7 @@ public class Draw : ISystem
             {
                 color = Color.red;
             }
+
             ECSController.Instance.UpdateShapeColor(entityID, color);
         }
          
