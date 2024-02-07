@@ -21,7 +21,7 @@ public class Initialize : ISystem
         {
             world.entities.Add(world.nbEntities);
             world.positionTab[world.nbEntities] = new Position ( shapeConf.initialPosition );
-            world.tailleTab[world.nbEntities] = new Taille ( shapeConf.initialSize );
+            world.sizeTab[world.nbEntities] = new Size ( shapeConf.initialSize );
             world.speedTab[world.nbEntities] = new Speed ( shapeConf.initialVelocity);
             if (shapeConf.initialVelocity.magnitude > 0) {
                 world.stateTab[world.nbEntities] = new State(State.CircleState.Dynamic);
@@ -39,7 +39,7 @@ public class Initialize : ISystem
             ECSController.Instance.CreateShape(world.nbEntities, shapeConf.initialSize);
 
             //Log the entity creation
-            Debug.Log("Entity " + world.nbEntities + " "+ world.tailleTab[world.nbEntities].taille);
+            Debug.Log("Entity " + world.nbEntities + " "+ world.sizeTab[world.nbEntities].size);
             world.nbEntities++;
         }
 

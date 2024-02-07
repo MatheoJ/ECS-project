@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class World 
 {
-    public Taille[] tailleTab;
+    public Size[] sizeTab;
     public Position[] positionTab;
     public Speed[] speedTab;
     public State[] stateTab;
@@ -60,7 +60,7 @@ public class World
     }
 
     private World() {
-        tailleTab = new Taille[1000];
+        sizeTab = new Size[1000];
         positionTab = new Position[1000];
         speedTab = new Speed[1000];
         stateTab = new State[1000];

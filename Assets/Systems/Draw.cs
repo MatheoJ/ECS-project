@@ -24,8 +24,8 @@ public class Draw : ISystem
             {
                 continue;
             }
-            var taille = world.tailleTab[entityID];
-            ECSController.Instance.UpdateShapeSize(entityID, taille.taille);
+            var size = world.sizeTab[entityID];
+            ECSController.Instance.UpdateShapeSize(entityID, size.size);
         }
 
         foreach (var entityID in world.entities)
@@ -45,12 +45,12 @@ public class Draw : ISystem
                 world.inCollisionTab[entityID].inCollision = false;
             } 
             // Circle about to explode next collision
-            else if (world.tailleTab[entityID].taille == (ECSController.Instance.Config.explosionSize - 1) && state.state == State.CircleState.Dynamic)
+            else if (world.sizeTab[entityID].size == (ECSController.Instance.Config.explosionSize - 1) && state.state == State.CircleState.Dynamic)
             {
                 color = new Color(1, 0.5f, 0);
             }
             // Circle can be protected
-            else if (world.tailleTab[entityID].taille == ECSController.Instance.Config.protectionSize && state.state == State.CircleState.Dynamic)
+            else if (world.sizeTab[entityID].size == ECSController.Instance.Config.protectionSize && state.state == State.CircleState.Dynamic)
             {
                 color = new Color(0.5f, 0.5f, 1);
             }

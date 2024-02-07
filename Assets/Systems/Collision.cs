@@ -18,7 +18,7 @@ public class Collision : ISystem
             }
 
             var position = world.positionTab[entityID];
-            var taille = world.tailleTab[entityID];
+            var size = world.sizeTab[entityID];
 
             float cameraHeight = 2f * Camera.main.orthographicSize;
             float cameraWidth = cameraHeight * Camera.main.aspect;
@@ -28,27 +28,27 @@ public class Collision : ISystem
             float yMax = cameraHeight / 2;
             float yMin = -cameraHeight / 2;
 
-            float halfTaille = taille.taille / 2;
+            float halfSize = size.size / 2;
 
-            if (position.position.x + halfTaille > xMax)
+            if (position.position.x + halfSize > xMax)
             {
-                position.position.x = xMax - halfTaille;
+                position.position.x = xMax - halfSize;
                 world.speedTab[entityID].speed.x *= -1;
             }
-            else if (position.position.x - halfTaille < xMin)
+            else if (position.position.x - halfSize < xMin)
             {
-                position.position.x = xMin + halfTaille;
+                position.position.x = xMin + halfSize;
                 world.speedTab[entityID].speed.x *= -1;
             }
 
-            if (position.position.y + halfTaille > yMax)
+            if (position.position.y + halfSize > yMax)
             {
-                position.position.y = yMax - halfTaille;
+                position.position.y = yMax - halfSize;
                 world.speedTab[entityID].speed.y *= -1;
             }
-            else if (position.position.y - halfTaille < yMin)
+            else if (position.position.y - halfSize < yMin)
             {
-                position.position.y = yMin + halfTaille;
+                position.position.y = yMin + halfSize;
                 world.speedTab[entityID].speed.y *= -1;
             }
 
@@ -58,7 +58,7 @@ public class Collision : ISystem
         foreach (var entityID in world.entities)
         {
             var position = world.positionTab[entityID];
-            var taille = world.tailleTab[entityID];
+            var size = world.sizeTab[entityID];
             var speed = world.speedTab[entityID];
             var state = world.stateTab[entityID];
 
@@ -67,10 +67,10 @@ public class Collision : ISystem
             for (int i = indexOfentity + 1; i < world.entities.Count; i++)
             {
                 var position2 = world.positionTab[world.entities[i]];
-                var taille2 = world.tailleTab[world.entities[i]];
+                var size2 = world.sizeTab[world.entities[i]];
                 var speed2 = world.speedTab[world.entities[i]];
 
-                CollisionResult collisionResult = CollisionUtility.CalculateCollision(position.position, speed.speed, taille.taille, position2.position, speed2.speed, taille2.taille);
+                CollisionResult collisionResult = CollisionUtility.CalculateCollision(position.position, speed.speed, size.size, position2.position, speed2.speed, size2.size);
 
                 if (collisionResult != null)
                 {
@@ -79,7 +79,7 @@ public class Collision : ISystem
                     speed.speed = collisionResult.velocity1;
                     speed2.speed = collisionResult.velocity2;
 
-                    int tailleProtection = ECSController.Instance.Config.protectionSize;
+                    int sizeProtection = ECSController.Instance.Config.protectionSize;
                     var state2 = world.stateTab[world.entities[i]];
                     var inCollision = world.inCollisionTab[entityID];
                     var inCollision2 = world.inCollisionTab[world.entities[i]];
@@ -104,19 +104,19 @@ public class Collision : ISystem
                     }
 
                     if (state.state != State.CircleState.Static && state2.state != State.CircleState.Static) {
-                        HandleDynamicCollision(entityID, world.entities[i], taille, taille2, state, state2, tailleProtection);
+                        HandleDynamicCollision(entityID, world.entities[i], size, size2, state, state2, sizeProtection);
                     }
                 }
             }
         }
     }
 
-    private static void HandleDynamicCollision(uint entity1, uint entity2, Taille taille1, Taille taille2, State state1, State state2, float protectionSize)
+    private static void HandleDynamicCollision(uint entity1, uint entity2, Size size1, Size size2, State state1, State state2, float protectionSize)
     {
         var world = World.Instance;
 
         // Increment the collision counter for dynamic circles of the same size
-        if (taille1.taille == taille2.taille && taille1.taille == protectionSize)
+        if (size1.size == size2.size && size1.size == protectionSize)
         {
             if (state1.state == State.CircleState.Dynamic) 
             {
@@ -133,33 +133,33 @@ public class Collision : ISystem
         //  Change the size for the bigger circle in collision with a smaller circle
         if (state1.state != State.CircleState.Protected && state2.state != State.CircleState.Protected)
         {
-            if (taille1.taille > taille2.taille)
+            if (size1.size > size2.size)
             {
-                taille1.taille++;
-                taille2.taille--;
+                size1.size++;
+                size2.size--;
             }
-            else if (taille1.taille < taille2.taille)
+            else if (size1.size < size2.size)
             {
-                taille1.taille--;
-                taille2.taille++;
+                size1.size--;
+                size2.size++;
             }
         }
         else if (state1.state == State.CircleState.Protected || state2.state == State.CircleState.Protected)
         {
-            HandleProtectedCollision(entity1, entity2, taille1, taille2, state1, state2);
+            HandleProtectedCollision(entity1, entity2, size1, size2, state1, state2);
         }
     }
 
-    private static void HandleProtectedCollision(uint entity1, uint entity2, Taille taille1, Taille taille2, State state1, State state2)
+    private static void HandleProtectedCollision(uint entity1, uint entity2, Size size1, Size size2, State state1, State state2)
     {
         // Decrease the size for the bigger circle in collision with a protected circle
-        if (state1.state == State.CircleState.Protected && taille1.taille < taille2.taille)
+        if (state1.state == State.CircleState.Protected && size1.size < size2.size)
         {
-            taille2.taille--;
+            size2.size--;
         }
-        else if (state2.state == State.CircleState.Protected && taille2.taille < taille1.taille)
+        else if (state2.state == State.CircleState.Protected && size2.size < size1.size)
         {
-            taille1.taille--;
+            size1.size--;
         }
     }
     public string Name { get; } = "Collision";

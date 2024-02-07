@@ -6,7 +6,7 @@ public class Explosion : ISystem
 {
     public void UpdateSystem()
     {
-        int tailleMax = ECSController.Instance.Config.explosionSize;
+        int sizeMax = ECSController.Instance.Config.explosionSize;
         bool mouseDown = Input.GetMouseButtonDown(0);
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPosition.z = 0; // Assurez-vous que la position Z est à 0 pour une correspondance 2D
@@ -26,23 +26,23 @@ public class Explosion : ISystem
             }
 
             var position = world.positionTab[entityID];
-            var taille = world.tailleTab[entityID];
+            var size = world.sizeTab[entityID];
             var speed = world.speedTab[entityID];
 
             
-            bool isMouseOver = mouseDown && IsMouseOverEntity(mouseWorldPosition, position, taille);
+            bool isMouseOver = mouseDown && IsMouseOverEntity(mouseWorldPosition, position, size);
 
-            if (taille.taille <= 0f || (isMouseOver && taille.taille <= 4 ))
+            if (size.size <= 0f || (isMouseOver && size.size <= 4 ))
             {
                 entitiesToRemove.Add(entityID);
             }
-            else if (taille.taille >= tailleMax || isMouseOver)
+            else if (size.size >= sizeMax || isMouseOver)
             {
 
-                int newTaille = ((int)(taille.taille / 4.0));
-                if (newTaille < 1)
+                int newSize = ((int)(size.size / 4.0));
+                if (newSize < 1)
                 {
-                    newTaille = 1;
+                    newSize = 1;
                 }
 
                 Vector2[] diagonals = new Vector2[4];
@@ -51,7 +51,7 @@ public class Explosion : ISystem
                 diagonals[2] = new Vector2(-1, -1);
                 diagonals[3] = new Vector2(1, -1);
 
-                float thirdOfTaille = taille.taille / 3;
+                float thirdOfSize = size.size / 3;
                 float speedValue = speed.speed.magnitude;
 
                 // Create 4 new entities
@@ -59,8 +59,8 @@ public class Explosion : ISystem
                 {
                     entitiesToAdd.Add(world.nbEntities);
 
-                    world.positionTab[world.nbEntities] = new Position(position.position + diagonals[i] * thirdOfTaille);
-                    world.tailleTab[world.nbEntities] = new Taille(newTaille);
+                    world.positionTab[world.nbEntities] = new Position(position.position + diagonals[i] * thirdOfSize);
+                    world.sizeTab[world.nbEntities] = new Size(newSize);
                     world.speedTab[world.nbEntities] = new Speed(diagonals[i] * speedValue);
                     world.stateTab[world.nbEntities] = new State(State.CircleState.Explosion);
                     world.collisionCountTab[world.nbEntities] = new CollisionCount();
@@ -68,7 +68,7 @@ public class Explosion : ISystem
                     world.cooldownTimeTab[world.nbEntities] = new CooldownTime();
                     world.inCollisionTab[world.nbEntities] = new InCollision(false);
 
-                    ECSController.Instance.CreateShape(world.nbEntities, newTaille);
+                    ECSController.Instance.CreateShape(world.nbEntities, newSize);
 
                     world.nbEntities++;
                 }
@@ -91,9 +91,9 @@ public class Explosion : ISystem
     }
     public string Name { get; } = "Explosion";
 
-    private bool IsMouseOverEntity(Vector3 mousePosition, Position entityPosition, Taille entityTaille)
+    private bool IsMouseOverEntity(Vector3 mousePosition, Position entityPosition, Size entitysize)
     {
-        return (mousePosition - new Vector3(entityPosition.position.x, entityPosition.position.y, 0)).magnitude < entityTaille.taille;
+        return (mousePosition - new Vector3(entityPosition.position.x, entityPosition.position.y, 0)).magnitude < entitysize.size;
     }
 
 

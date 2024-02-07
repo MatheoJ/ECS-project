@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameStateSave : IComponent
 {
-    public Taille[] tailleTab;
+    public Size[] sizeTab;
     public Position[] positionTab;
     public Speed[] speedTab;
     public State[] stateTab;
@@ -16,11 +16,11 @@ public class GameStateSave : IComponent
     public List<uint> entities = new List<uint>();
 
     // Constructor that performs deep copying
-    public GameStateSave(Taille[] tailleTab, Position[] positionTab, Speed[] speedTab, State[] stateTab, 
+    public GameStateSave(Size[] sizeTab, Position[] positionTab, Speed[] speedTab, State[] stateTab, 
                         CollisionCount[] collisionCountTab, ProtectionTime[] protectionTimeTab, 
                         CooldownTime[] cooldownTimeTab, List<uint> entities, InCollision[] inCollisionTab)
     {
-        this.tailleTab = DeepCopyArray(tailleTab);
+        this.sizeTab = DeepCopyArray(sizeTab);
         this.positionTab = DeepCopyArray(positionTab);
         this.speedTab = DeepCopyArray(speedTab);
         this.stateTab = DeepCopyArray(stateTab);
