@@ -32,6 +32,7 @@ public class Initialize : ISystem
             world.collisionCountTab[world.nbEntities] = new CollisionCount ();
             world.protectionTimeTab[world.nbEntities] = new ProtectionTime ();
             world.cooldownTimeTab[world.nbEntities] = new CooldownTime ();
+            world.inCollisionTab[world.nbEntities] = new InCollision (false);
 
             Color color = Color.white;
 

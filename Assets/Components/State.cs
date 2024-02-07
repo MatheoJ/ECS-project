@@ -9,7 +9,8 @@ public class State : IComponent
         Dynamic,
         Static,
         Protected,
-        Cooldown
+        Cooldown,
+        Explosion
     }
 
     public CircleState state;
