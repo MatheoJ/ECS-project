@@ -64,14 +64,14 @@ public class Collision : ISystem
 
             int indexOfentity = world.entities.IndexOf(entityID);
 
-            for (int i = indexOfentity+ 1; i < world.entities.Count; i++)
+            for (int i = indexOfentity + 1; i < world.entities.Count; i++)
             {
                 var position2 = world.positionTab[world.entities[i]];
                 var taille2 = world.tailleTab[world.entities[i]];
                 var speed2 = world.speedTab[world.entities[i]];
 
                 CollisionResult collisionResult = CollisionUtility.CalculateCollision(position.position, speed.speed, taille.taille, position2.position, speed2.speed, taille2.taille);
-                
+
                 if (collisionResult != null)
                 {
                     position.position = collisionResult.position1;
@@ -80,9 +80,28 @@ public class Collision : ISystem
                     speed2.speed = collisionResult.velocity2;
 
                     int tailleProtection = ECSController.Instance.Config.protectionSize;
-                    var collisionCount = world.collisionCountTab[entityID].collisionCount;
-                    var collisionCount2 = world.collisionCountTab[world.entities[i]].collisionCount;
                     var state2 = world.stateTab[world.entities[i]];
+                    var inCollision = world.inCollisionTab[entityID];
+                    var inCollision2 = world.inCollisionTab[world.entities[i]];
+
+                    // set in Collision to true if not static (for the green color)
+                    if (state.state != State.CircleState.Static)
+                    {
+                        inCollision.inCollision = true;
+
+                    }
+                    if (state2.state != State.CircleState.Static)
+                    {
+                        inCollision2.inCollision = true;
+                    }
+
+                    if (state.state == State.CircleState.Explosion){
+                        state.state = State.CircleState.Dynamic;
+                    }
+    
+                    if (state2.state == State.CircleState.Explosion) {
+                        state2.state = State.CircleState.Dynamic;
+                    }
 
                     if (state.state != State.CircleState.Static && state2.state != State.CircleState.Static) {
                         HandleDynamicCollision(entityID, world.entities[i], taille, taille2, state, state2, tailleProtection);
@@ -99,8 +118,13 @@ public class Collision : ISystem
         // Increment the collision counter for dynamic circles of the same size
         if (taille1.taille == taille2.taille && taille1.taille == protectionSize)
         {
-            world.collisionCountTab[entity1].collisionCount++;
-            world.collisionCountTab[entity2].collisionCount++;
+            if (state1.state == State.CircleState.Dynamic) 
+            {
+                world.collisionCountTab[entity1].collisionCount++;
+            } if (state2.state == State.CircleState.Dynamic)
+            {
+                world.collisionCountTab[entity2].collisionCount++;
+            }
             //debug collision count
             Debug.Log("Collision count : " + world.collisionCountTab[entity1].collisionCount);
             Debug.Log("Collision count : " + world.collisionCountTab[entity2].collisionCount);

@@ -62,10 +62,11 @@ public class Explosion : ISystem
                     world.positionTab[world.nbEntities] = new Position(position.position + diagonals[i] * thirdOfTaille);
                     world.tailleTab[world.nbEntities] = new Taille(newTaille);
                     world.speedTab[world.nbEntities] = new Speed(diagonals[i] * speedValue);
-                    world.stateTab[world.nbEntities] = new State(State.CircleState.Dynamic);
+                    world.stateTab[world.nbEntities] = new State(State.CircleState.Explosion);
                     world.collisionCountTab[world.nbEntities] = new CollisionCount();
                     world.protectionTimeTab[world.nbEntities] = new ProtectionTime();
                     world.cooldownTimeTab[world.nbEntities] = new CooldownTime();
+                    world.inCollisionTab[world.nbEntities] = new InCollision(false);
 
                     ECSController.Instance.CreateShape(world.nbEntities, newTaille);
 

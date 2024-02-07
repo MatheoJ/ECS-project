@@ -15,7 +15,6 @@ public class RegisterSystems
         toRegister.Add(new Protection());
         toRegister.Add(new Draw());
 
-
         return toRegister;
     }
 }

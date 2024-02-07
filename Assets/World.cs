@@ -11,6 +11,7 @@ public class World
     public CollisionCount[] collisionCountTab;
     public ProtectionTime[] protectionTimeTab;
     public CooldownTime[] cooldownTimeTab;
+    public InCollision[] inCollisionTab;
     public List<uint> entities = new List<uint>();
     public uint nbEntities = 0;
     public uint frameCountForLeftPartofScreen = 0;
@@ -61,6 +62,7 @@ public class World
         collisionCountTab = new CollisionCount[1000];
         protectionTimeTab = new ProtectionTime[1000];
         cooldownTimeTab = new CooldownTime[1000];
+        inCollisionTab = new InCollision[1000];
 
     }
 }
