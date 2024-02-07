@@ -64,7 +64,8 @@ public class RollBack : ISystem
                 world.stateTab = lastGameState.stateTab;
                 world.collisionCountTab = lastGameState.collisionCountTab;
                 world.protectionTimeTab = lastGameState.protectionTimeTab;
-                world.cooldownTimeTab = lastGameState.cooldownTimeTab;  
+                world.cooldownTimeTab = lastGameState.cooldownTimeTab; 
+                world.inCollisionTab = lastGameState.inCollisionTab;
                 
                 foreach (var entityID in world.entities)
                 {
@@ -76,7 +77,7 @@ public class RollBack : ISystem
            // Add the current game state to the list of game states saved
             world.saveGameStates.Add(new GameStateSave(world.tailleTab, world.positionTab, world.speedTab, world.stateTab,
                                                         world.collisionCountTab, world.protectionTimeTab, world.cooldownTimeTab,
-                                                        world.entities));
+                                                        world.entities, world.inCollisionTab));
             world.saveTimeCodes.Add(new SaveTimeCode());
 
         }

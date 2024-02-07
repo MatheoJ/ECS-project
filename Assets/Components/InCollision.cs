@@ -10,4 +10,9 @@ public class InCollision : IComponent
     {
         this.inCollision = inCollision;
     }
+
+    public InCollision(InCollision inCollision)
+    {
+        this.inCollision = inCollision.inCollision;
+    }
 }

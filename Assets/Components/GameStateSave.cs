@@ -12,10 +12,13 @@ public class GameStateSave : IComponent
     public CollisionCount[] collisionCountTab;
     public ProtectionTime[] protectionTimeTab;
     public CooldownTime[] cooldownTimeTab;
+    public InCollision[] inCollisionTab;
     public List<uint> entities = new List<uint>();
 
     // Constructor that performs deep copying
-    public GameStateSave(Taille[] tailleTab, Position[] positionTab, Speed[] speedTab, State[] stateTab, CollisionCount[] collisionCountTab, ProtectionTime[] protectionTimeTab, CooldownTime[] cooldownTimeTab, List<uint> entities)
+    public GameStateSave(Taille[] tailleTab, Position[] positionTab, Speed[] speedTab, State[] stateTab, 
+                        CollisionCount[] collisionCountTab, ProtectionTime[] protectionTimeTab, 
+                        CooldownTime[] cooldownTimeTab, List<uint> entities, InCollision[] inCollisionTab)
     {
         this.tailleTab = DeepCopyArray(tailleTab);
         this.positionTab = DeepCopyArray(positionTab);
@@ -24,6 +27,7 @@ public class GameStateSave : IComponent
         this.collisionCountTab = DeepCopyArray(collisionCountTab);
         this.protectionTimeTab = DeepCopyArray(protectionTimeTab);
         this.cooldownTimeTab = DeepCopyArray(cooldownTimeTab);
+        this.inCollisionTab = DeepCopyArray(inCollisionTab);
         this.entities = new List<uint>(entities);
     }
 
