@@ -10,4 +10,10 @@ public class ProtectionTime : IComponent
     {
         this.protectionTime = 0;
     }
+
+
+    public ProtectionTime(ProtectionTime protectionTime)
+    {
+        this.protectionTime = protectionTime.protectionTime;
+    }
 }

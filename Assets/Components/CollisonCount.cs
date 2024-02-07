@@ -10,4 +10,14 @@ public class CollisionCount : IComponent
     {
         this.collisionCount = 0;
     }
+
+    public CollisionCount(int collisionCount)
+    {
+        this.collisionCount = collisionCount;
+    }
+
+    public CollisionCount(CollisionCount collisionCount)
+    {
+        this.collisionCount = collisionCount.collisionCount;
+    }
 }

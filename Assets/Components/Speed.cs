@@ -10,4 +10,9 @@ public class Speed : IComponent
     {
         this.speed = speed;
     }
+
+    public Speed(Speed speed)
+    {
+        this.speed = speed.speed;
+    }
 }

@@ -80,8 +80,6 @@ public class Collision : ISystem
                     speed2.speed = collisionResult.velocity2;
 
                     int tailleProtection = ECSController.Instance.Config.protectionSize;
-                    var collisionCount = world.collisionCountTab[entityID].collisionCount;
-                    var collisionCount2 = world.collisionCountTab[world.entities[i]].collisionCount;
                     var state2 = world.stateTab[world.entities[i]];
 
                     if (state.state != State.CircleState.Static && state2.state != State.CircleState.Static) {

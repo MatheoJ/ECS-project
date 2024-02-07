@@ -18,4 +18,9 @@ public class State : IComponent
     {
         this.state = state;
     }
+
+    public State(State state)
+    {
+        this.state = state.state;
+    }
 }

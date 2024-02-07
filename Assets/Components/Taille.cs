@@ -10,4 +10,9 @@ public class Taille : IComponent
     {
         this.taille = taille;
     }
+
+    public Taille(Taille taille)
+    {
+        this.taille = taille.taille;
+    }
 }

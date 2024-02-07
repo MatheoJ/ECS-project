@@ -12,6 +12,11 @@ public class World
     public ProtectionTime[] protectionTimeTab;
     public CooldownTime[] cooldownTimeTab;
     public List<uint> entities = new List<uint>();
+
+    public List<GameStateSave> saveGameStates = new List<GameStateSave>();
+    public List<SaveTimeCode> saveTimeCodes = new List<SaveTimeCode>();
+    public double timeSinceLastRollBack = 0;
+
     public uint nbEntities = 0;
     public uint frameCountForLeftPartofScreen = 0;
 

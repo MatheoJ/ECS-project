@@ -10,4 +10,10 @@ public class CooldownTime : IComponent
     {
         this.cooldownTime = 0;
     }
+
+
+    public CooldownTime(CooldownTime cooldownTime)
+    {
+        this.cooldownTime = cooldownTime.cooldownTime;
+    }
 }
