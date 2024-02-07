@@ -78,6 +78,7 @@ public class Draw : ISystem
             else if (state.state == State.CircleState.Explosion)
             {
                 color = Color.magenta;
+                state.state = State.CircleState.Dynamic;
             }
 
             ECSController.Instance.UpdateShapeColor(entityID, color);
